@@ -21,14 +21,16 @@ In order to get the tidy data, the script do as follow:
 
 3. Using the `read.table()` to read each corresponding file.
 
-4. Generate x and y data set by merging X_train with X_test and y_train with y_test accordingly using `rbind()`
+4. Generate train and test data set by merging subject_train, y_train, and X_train and merging subject_test, y_test and X_test accordingly using `cbind()`
 
-5. Assign the descriptive variables name to activity, x data frame, and y data frame.
+5. Generate single unified data set by merging train and test data set using `rbind()`.
 
-6. Get only features with measurements mean and standard deviation by using `grep()`.
+6. Assign the descriptive variables name to activity, x data frame, and y data frame.
 
-7. Assign descriptive activity name.
+7. Get only features with measurements mean and standard deviation by using `grep()`.
 
-8. Generate single unified data set by merging x and y using `cbind()`.
+8. Assign descriptive activity name.
+
+9. Apply melt and dcast transformation to summarize the data into it's mean for each subject, variable, and activity.
 
 9. generate another independent tidy data set named `tidy_data_human_activity_recognition.txt`  with  the average of each variable for each activity and subject.
