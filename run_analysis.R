@@ -39,29 +39,29 @@ feature_labels <- read.table("./UCI HAR Dataset/features.txt")
 act_labels <- read.table("./UCI HAR Dataset/activity_labels.txt")
 
 # merging data set
-df_x <- rbind(x_train, x_test)
-df_y <- rbind(y_train, y_test)
-df_subject <- rbind(subject_train, subject_test)
+df_train <- cbind(subject_train, y_train, x_train)
+df_test <- cbind(subject_test, y_test, x_test)
+
+# generating single unified dataset
+df_all <- rbind(df_train, df_test)
+
 
 # assigning variables names to corresponding data set
 act_labels <- setNames(act_labels, c("activityid", "activityname"))
-df_x <- setNames(df_x, feature_labels$V2)
-df_y <- setNames(df_y, "activityid")
-subject <- setNames(df_subject, "subject")
+df_all <- setNames(df_all, c("subject", "activityid", as.character(feature_labels$V2)))
 
 # get only features with measurement of mean and standard deviation
-df_x_subset <- df_x[,grep("mean|std", names(df_x))]
+df_all_subset <- df_all[,c("subject", "activityid",grep("mean|std", names(df_all), value = TRUE))]
 
-# use descriptive activity name
-df_y <- df_y %>% merge(act_labels, by = "activityid", sort = FALSE)
-
-# generating single unified dataset
-df_all <- cbind(subject, df_y, df_x_subset)
+# give the descriptive activity labels
+df_all_subset <- df_all_subset %>% 
+  merge(act_labels, by ="activityid", sort = FALSE) %>% 
+  select(subject, activityid, activityname, names(df_all_subset)[4]:names(df_all_subset)[ncol(df_all_subset)])
 
 # Since we need to measure the mean of each variable for each activity and each subject,
 # then we need to change those measure as rows and treat it as observations
 # instead of columns and treat it as features
-df_all_melted <- melt(df_all, id.vars = names(df_all[,1:3]), measure.vars = names(df_all[,4:ncol(df_all)]))
+df_all_melted <- melt(df_all_subset, id.vars = names(df_all_subset[,1:3]), measure.vars = names(df_all_subset[,4:ncol(df_all_subset)]))
 
 # based on the unified data, generate independent tidy data set
 # with the average of each variable for each activity and subject
