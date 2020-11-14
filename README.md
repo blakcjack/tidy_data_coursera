@@ -1,6 +1,6 @@
 # Tidy Data Analysis
 
-In this repository you will find a way to perform cleaning data to get tidy data. This project is done based on Getting and Cleaning Data hold by Jhon Hopkins University x Coursera.
+In this repository you will find a way to perform cleaning data to get tidy data. This project is done based on Getting and Cleaning Data held by Jhon Hopkins University x Coursera.
 
 In order to get the tidy data, the run_analysis script did as follow.
 
